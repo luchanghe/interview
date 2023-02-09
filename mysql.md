@@ -64,5 +64,21 @@ InnoDB：支持事务，行锁，有崩溃恢复能力。读写速度比MyISAM�
 
 
 ## 常用字符继
-- ASCII字符集 共128个字符
-- ISO 8859-1 共258个字符
+- ASC0II字符集 共128个字符
+- ISO 8859-1 共256个字符
+- GB2312
+- GBK
+- utf8
+
+## MySQL中utf8mb3和utf8mb4的区别
+utf8mb3 阉割版utf8，使用1-3个字节
+utf8mb4 正宗的utf8，使用1-4个字符，如果有emoji表情的话建议使用mb4
+
+## 关于InnerDb的一些知识点
+1. InnoDB中页的大小一般为 16 KB。
+2. InnoDB行格式有4个，分别为 Compact（紧凑型）、Redundant（预防型）、Dynamic（灵活型）和Compressed（压缩型）
+
+## 变长字段的四种行格式不同之处
+1. COMPACT ：变长字段长度列表，null值列表，记录信息头   |  列1 列2 列3
+2. Redundant：字段长度偏移列表，记录信息头             | 列1 列2 列3
+3. Dynamic和Compressed：与COMPACT相同，但处理行溢出时有分歧，COMPACT会在真实数据（列1，列2，列3）记录前768字节的数据和一个偏移指针，剩下的字节存储到其他页中，但Dynamic和Compressed只会记录一个指针，并把全部字节记录到其他页中。其中Compressed会对这些字节进行压缩处理。
