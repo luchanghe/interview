@@ -58,3 +58,22 @@ Redis是一个key-value存储系统
 1. 缓存空值或缺省值。
 2. 使用布隆过滤器快速判断数据是否存在
 3. 对入口进行合法性判断
+
+## 几个知识点
+1. string 最大长度为512M
+2. list底层是链表
+2. 分布式锁可以用setNx，但不能解决超时问题
+3. 惰性删除（在没有内存占用太高被干掉的情况下）
+
+## 关于redis的淘汰策略LRU（最近最少使用淘汰算法，LRU关键是看数据最后一次被使用到发生替换的时间长短，时间越长，数据就会被置换；）
+1. noeviction 只允许读不允许写
+2. volatile-lru  淘汰过期的key lru算法
+3. volatile-ttl  淘汰过期的key key的剩余时间小于tll
+4. volatile-random 随机淘汰过期的
+5. allkeys-lru 所有key lru
+6. allkeys-random 所有key 随机
+
+## 关于redis的淘汰策略LFU（最不经常使用淘汰算法，LFU关键是看一定时间段内页面被使用的频率（次数），使用频率越低，数据就会被置换。）
+1. volatile-lfu 过期 lfu
+2. allkeys-lfu 全部 lfu
+
