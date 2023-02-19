@@ -183,9 +183,15 @@ utf8mb4 正宗的utf8，使用1-4个字符，如果有emoji表情的话建议使
 5. 更新聚簇索引记录
 6. 记录undo日志
 7. 修改页面内容
-8. 记录redolog
+8. 记录redo日志
 9. 更新二级索引记录
 10. 记录binlog
 
 ## binLog的作用
 会记录表所有更改操作,包括更新删除数据,更改表结构等等,主要用于人工恢复数据
+
+## mysql主从原理
+原理是通过二进制文件binlog日志，mysql启动的时候master检测到有slave后开启一个dump线程，slave开启一个I/O Thread线程和master的dump线程进行tcp连接，第一次的时候是slave主动去让master发送的获取一份完整数据，
+而后master会通过dump主动推给slave，slave在拿到数据后会将其存入relaylog，也就是中继日志。再由自身的sql thread线程去读取，读取的时候是开启多个worker去处理的
+
+
